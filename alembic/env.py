@@ -7,6 +7,7 @@ from alembic import context
 
 from src.Models.City import City
 from src.Models.Sickness import Sickness
+from src.Models.SicknessReport import SicknessReport
 from src.Models.State import State
 
 # this is the Alembic Config object, which provides
@@ -25,7 +26,8 @@ if config.config_file_name is not None:
 target_metadata = [
     Sickness.metadata,
     State.metadata,
-    City.metadata
+    City.metadata,
+    SicknessReport.metadata
 ]
 
 # other values from the config, defined by the needs of env.py,
