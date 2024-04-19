@@ -23,13 +23,11 @@ def upgrade() -> None:
     op.create_table('sickness_reports',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('sickness_id', sa.Integer(), nullable=True),
-    sa.Column('state_id', sa.Integer(), nullable=True),
     sa.Column('city_id', sa.Integer(), nullable=True),
     sa.Column('date', sa.Date(), nullable=True),
     sa.Column('cases_count', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['city_id'], ['cities.id'], ),
     sa.ForeignKeyConstraint(['sickness_id'], ['sicknesses.id'], ),
-    sa.ForeignKeyConstraint(['state_id'], ['states.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
     # ### end Alembic commands ###

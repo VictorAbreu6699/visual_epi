@@ -5,8 +5,8 @@ from src.Core.QueryBuilder import QueryBuilder
 
 
 class StateRepository:
-
-    def get_all(self) -> pd.DataFrame:
+    @staticmethod
+    def get_all() -> pd.DataFrame:
         # Iniciar uma nova query
         query = QueryBuilder().start_query(State)
         # Converter os resultados para um DataFrame

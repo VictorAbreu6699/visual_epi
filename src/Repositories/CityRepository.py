@@ -5,8 +5,8 @@ from src.Core.QueryBuilder import QueryBuilder
 
 
 class CityRepository:
-
-    def get_all(self) -> pd.DataFrame:
+    @staticmethod
+    def get_all() -> pd.DataFrame:
         # Iniciar uma nova query
         query = QueryBuilder().start_query(City)
         # Converter os resultados para um DataFrame
