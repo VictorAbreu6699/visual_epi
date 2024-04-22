@@ -23,7 +23,7 @@ class SicknessReportRepository:
 
         query = query.with_entities(
             Sickness.id.label("sickness_id"), Sickness.name.label("sickness_name"),
-            State.id.label('state_id'), State.name.label('state_name'),
+            State.id.label('state_id'), State.name.label('state_name'), State.acronym.label('state_acronym'),
             City.id.label('city_id'), City.name.label('city_name'),
             SicknessReport.date, SicknessReport.cases_count
         )
