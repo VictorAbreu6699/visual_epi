@@ -31,7 +31,39 @@
             </div>
           </div>
           <div class="col-6">
-            
+            <form id="chart-form">
+              <div class="row">
+                  <div class="col-6">                                                
+                    <div class="mb-3">                            
+                      <label for="input-regioes" class="form-label">Regiões</label>
+                      <select id="input-regioes" class="form-select"></select>
+                    </div>
+                  </div>
+                  <div class="col-6">                      
+                      <div class="mb-3">                
+                        <label for="input-estados" class="form-label">Estados</label>            
+                        <select id="input-estados" class="form-select"></select>
+                      </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="mb-3">            
+                      <label for="input-cidades" class="form-label">Cidades</label>                
+                      <select id="input-cidades" class="form-select"></select>
+                    </div>
+                  </div>
+                  <div class="col-6">
+                      <div class="mb-3">  
+                        <label for="input-anos" class="form-label">Anos</label>                          
+                        <select id="input-anos" class="form-select"></select>
+                      </div>
+                  </div>
+              </div>
+              <div class="row">
+                  <div class="large-12 columns">
+                      <canvas class="large-12 columns" id="bars-chart-container" style="height:450px"></canvas>
+                  </div>
+              </div>
+          </form>
           </div>
         </div>
       </div>

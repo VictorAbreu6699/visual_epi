@@ -1,3 +1,11 @@
+result = request('GET', '/report-sickness-by-states')
+const STATES = [];
+
+if(result.status == 200){
+    const STATES = result.data.data
+}
+
+/*
 const STATES = [
     { "code": 12, "regionId": 1, "total": 95.49, "acron": "AC", "name": "Acre" },
     { "code": 16, "regionId": 1, "total": 120.15,"acron": "AP", "name": "Amapá" },
@@ -31,3 +39,4 @@ const STATES = [
     { "code": 51, "regionId": 5, "total": 96.63, "acron": "MT", "name": "Mato Grosso" },
     { "code": 50, "regionId": 5, "total": 78.22, "acron": "MS", "name": "Mato Grosso do Sul" },
 ];
+*/

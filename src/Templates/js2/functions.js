@@ -31,16 +31,3 @@ function request(metod, url, params = []) {
     return result;
   }
   
-result = request('GET', '/report-sickness-grouped', [
-    {
-        'name': 'group', 'value': 'state_name'
-    }, 
-    {
-        'name': 'start_date', 'value': '2022-02-02'
-    },
-    {
-        'name': 'end_date', 'value': '2024-05-04'
-    }
-])
-
-console.log(result)

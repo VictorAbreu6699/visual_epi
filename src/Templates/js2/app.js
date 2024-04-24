@@ -13,16 +13,38 @@ let selectEstado = document.getElementById("input-estados");
 let selectCidade = document.getElementById("input-cidades");
 let selectAno = document.getElementById("input-anos");
 
+fillOptions(selectRegiao, selectRegiao, REGIONS, "");
+
+selectRegiao.addEventListener("change", () => {
+    cleanChart(Chart.getChart(ctx));
+    cleanOptions(selectEstado);
+    cleanOptions(selectCidade);
+    cleanOptions(selectAno);
+    fillOptions(selectRegiao, selectEstado, STATES, "regionId");
+});
+
+selectEstado.addEventListener("change", () => {
+    cleanChart(Chart.getChart(ctx));
+    cleanOptions(selectCidade);
+    cleanOptions(selectAno);
+    fillOptions(selectEstado, selectCidade, CITIES, "code", getFirstTwoDigits);
+});
+
+selectCidade.addEventListener("change", () => {
+    cleanChart(Chart.getChart(ctx));
+    cleanOptions(selectAno);
+    fillOptions(selectCidade, selectAno, YEARS, "");
+});
+
 printMapChart(myMapChart);
 
 // print map chart
-function printMapChart(myMapChart, map = "BRAZIL") {
-
+function printMapChart(myMapChart, map = "BRAZIL") {        
     var d, jb;
     if (map === "BRAZIL") {
-        d = STATES.map((state) => { return { "hc-a2": state.acron, "value": state.total }});
+        d = STATES.map((state) => { return { "hc-a2": state.acronym, "value": state.cases_count }});
         jb = "hc-a2";
-    } else {
+    } else {        
         d = eval(map).features.map((city) => {
             var count = 0;
             var sum = 0;
@@ -40,7 +62,7 @@ function printMapChart(myMapChart, map = "BRAZIL") {
         });
         jb = "name";
     }
-
+    
     document.getElementById("btn-back").style.display = "none";
 
     if (myMapChart) myMapChart.destroy();
@@ -83,13 +105,14 @@ function printMapChart(myMapChart, map = "BRAZIL") {
             point: {
                 events: {
                     click: function () {
+                        console.log('oi')
                         if (map === "BRAZIL") {
                             STATES.forEach((state) => {
                                 if (state.name === this.name) {
-                                    printMapChart(myMapChart, state.acron);
+                                    printMapChart(myMapChart, state.acronym);
                                     document.getElementById("btn-back").style.display = "block";
-                                    selectByCode(selectRegiao, String(state.code).substring(0, 1));
-                                    selectByCode(selectEstado, String(state.code).substring(0, 2));
+                                    selectByCode(selectRegiao, state.id);
+                                    selectByCode(selectEstado, state.id);
                                 }
                             });
                         } else {
@@ -105,64 +128,6 @@ function printMapChart(myMapChart, map = "BRAZIL") {
         }]
         
     });
-}
-
-// print chart
-function printChart(chart) {
-    
-    let regiaoSelecionada = selectRegiao.options[selectRegiao.selectedIndex].text;
-    let estadoSelecionado = selectEstado.options[selectEstado.selectedIndex].text;
-    let cidadeSelecionada = selectCidade.options[selectCidade.selectedIndex].text;
-    let anoSelecionado = selectAno.options[selectAno.selectedIndex].text;
-    
-    if (regiaoSelecionada && estadoSelecionado
-            && cidadeSelecionada && anoSelecionado) {
-        
-        cleanChart(Chart.getChart(ctx));
-
-        chart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: VACCINES.map((vac) => vac.name),
-                datasets: [{
-                    label: 'Percentual de Vacinação',
-                    data: INDEXED_DATA[cidadeSelecionada][anoSelecionado],
-                    backgroundColor: [
-                        'rgb(255, 99, 132)',
-                        'rgb(75, 192, 192)',
-                        'rgb(255, 205, 86)',
-                        'rgb(201, 203, 207)',
-                        'rgb(54, 162, 235)',
-                        'rgb(31, 120, 50)',
-                        'rgb(95, 105, 207)',
-                        'rgb(255 122 127 / 80%)',
-                        'rgb(30% 20% 10%)',
-                        'rgb(162,235,54)',
-                        'rgb(235,127,54)',
-                        'rgb(30% 20% 50%)'
-                      ],
-                      borderColor: [
-                        'rgb(255, 99, 132)',
-                        'rgb(255, 159, 64)',
-                        'rgb(255, 205, 86)',
-                        'rgb(75, 192, 192)',
-                        'rgb(54, 162, 235)',
-                        'rgb(153, 102, 255)',
-                        'rgb(201, 203, 207)'
-                      ],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                indexAxis: 'y',
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
-    }
 }
 
 function getFirstTwoDigits(str) {
@@ -192,4 +157,26 @@ function selectByCode(el, code) {
 // limpa um gráfico se ele existir
 function cleanChart(chart) {
     if (chart) chart.destroy();
+}
+
+function fillOptions(el, target, objArrToCompare, propToCompare, functionToCompareCallback) {
+    if (el === target || el.value) {
+        var val;
+        objArrToCompare.forEach((obj) => {
+            if (propToCompare) {
+                val = functionToCompareCallback ? functionToCompareCallback(obj[propToCompare]) : obj[propToCompare];
+            }
+            if (!propToCompare || (propToCompare && el.value == val)) {
+                var novaOpcao = new Option(String(obj.name), String(obj.code));
+                target.add(novaOpcao, undefined);
+            }
+        });
+        target.disabled = false;
+    } else {
+        target.disabled = true;
+    }
+}
+
+function getFirstTwoDigits(str) {
+    return String(str).substring(0, 2);
 }
