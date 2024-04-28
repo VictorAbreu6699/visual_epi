@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Visual EPI</title>
+    <link href="{{ url_for('static', path='/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', path='/css/app.css') }}">
+  </head>
+  <body>
+    <header class="bg-dark-subtle">
+      <div class="container">
+        <div class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
+          <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">            
+            <span class="fs-4">Visual EPI</span>
+          </a>    
+          <ul class="nav nav-pills">
+            <li class="nav-item"><a href="/2" class="nav-link" aria-current="page">Relatórios</a></li>
+            <li class="nav-item"><a href="/importar-arquivo" class="nav-link">Importar Arquivo</a></li>          
+          </ul>
+        </div>      
+      </div>    
+    </header>
+    <main>
+      <div class="container">
+        <div class="row">
+          <div class="col-6">
+            <div class="border-round row-state" style="position: relative">
+              <div id="map-container"></div>
+              <a id="btn-back" style="position: absolute; top: 12px; left: 24px; display: none;" onclick="printMapChart()" href="#">Voltar</a>
+            </div>
+          </div>
+          <div class="col-6">
+            <form id="chart-form">
+              <div class="row">
+                  <div class="col-6">                                                
+                    <div class="mb-3">                            
+                      <label for="input-regioes" class="form-label">Regiões</label>
+                      <select id="input-regioes" class="form-select"></select>
+                    </div>
+                  </div>
+                  <div class="col-6">                      
+                      <div class="mb-3">                
+                        <label for="input-estados" class="form-label">Estados</label>            
+                        <select id="input-estados" class="form-select"></select>
+                      </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="mb-3">            
+                      <label for="input-cidades" class="form-label">Cidades</label>                
+                      <select id="input-cidades" class="form-select"></select>
+                    </div>
+                  </div>
+                  <div class="col-6">
+                      <div class="mb-3">  
+                        <label for="input-anos" class="form-label">Anos</label>                          
+                        <select id="input-anos" class="form-select"></select>
+                      </div>
+                  </div>
+              </div>
+              <div class="row">
+                  <div class="large-12 columns">
+                      <canvas class="large-12 columns" id="bars-chart-container" style="height:450px"></canvas>
+                  </div>
+              </div>
+          </form>
+          </div>
+        </div>
+      </div>
+    </main>
+    <script src="{{ url_for('static', path='/js/vendor/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', path='/js2/functions.js') }}"></script>
+    <script src="{{ url_for('static', path='/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ url_for('static', path='/js2/data/indexed-data.js') }}"></script>
+    <script src="{{ url_for('static', path='/js2/data/vaccines.js') }}"></script>
+    <script src="{{ url_for('static', path='/js2/data/regions.js') }}"></script>
+    <script src="{{ url_for('static', path='/js2/data/states.js') }}"></script>
+    <script src="{{ url_for('static', path='/js2/data/cities.js') }}"></script>
+    <script src="{{ url_for('static', path='/js2/data/years.js') }}"></script>
+    <script src="{{ url_for('static', path='/js2/data/geometry/countries/br.js') }}"></script>
+    <script src="{{ url_for('static', path='/js2/data/geometry/states/ac.js') }}"></script>
+    <script src="{{ url_for('static', path='/js2/data/geometry/states/al.js') }}"></script>
+    <script src="{{ url_for('static', path='/js2/data/geometry/states/ap.js') }}"></script>
+    <script src="{{ url_for('static', path='/js2/data/geometry/states/am.js') }}"></script>
+    <script src="{{ url_for('static', path='/js2/data/geometry/states/ba.js') }}"></script>
+    <script src="{{ url_for('static', path='/js2/data/geometry/states/ce.js') }}"></script>
+    <script src="{{ url_for('static', path='/js2/data/geometry/states/df.js') }}"></script>
+    <script src="{{ url_for('static', path='/js2/data/geometry/states/es.js') }}"></script>
+    <script src="{{ url_for('static', path='/js2/data/geometry/states/go.js') }}"></script>
+    <script src="{{ url_for('static', path='/js2/data/geometry/states/ma.js') }}"></script>
+    <script src="{{ url_for('static', path='/js2/data/geometry/states/mt.js') }}"></script>
+    <script src="{{ url_for('static', path='/js2/data/geometry/states/ms.js') }}"></script>
+    <script src="{{ url_for('static', path='/js2/data/geometry/states/mg.js') }}"></script>
+    <script src="{{ url_for('static', path='/js2/data/geometry/states/pa.js') }}"></script>
+    <script src="{{ url_for('static', path='/js2/data/geometry/states/pb.js') }}"></script>
+    <script src="{{ url_for('static', path='/js2/data/geometry/states/pr.js') }}"></script>
+    <script src="{{ url_for('static', path='/js2/data/geometry/states/pe.js') }}"></script>
+    <script src="{{ url_for('static', path='/js2/data/geometry/states/pi.js') }}"></script>
+    <script src="{{ url_for('static', path='/js2/data/geometry/states/rj.js') }}"></script>
+    <script src="{{ url_for('static', path='/js2/data/geometry/states/rn.js') }}"></script>
+    <script src="{{ url_for('static', path='/js2/data/geometry/states/rs.js') }}"></script>
+    <script src="{{ url_for('static', path='/js2/data/geometry/states/ro.js') }}"></script>
+    <script src="{{ url_for('static', path='/js2/data/geometry/states/rr.js') }}"></script>
+    <script src="{{ url_for('static', path='/js2/data/geometry/states/sc.js') }}"></script>
+    <script src="{{ url_for('static', path='/js2/data/geometry/states/sp.js') }}"></script>
+    <script src="{{ url_for('static', path='/js2/data/geometry/states/se.js') }}"></script>
+    <script src="{{ url_for('static', path='/js2/data/geometry/states/to.js') }}"></script>
+    <script src="{{ url_for('static', path='/js2/vendor/chart.min.js') }}"></script>
+    <script src="{{ url_for('static', path='/js2/vendor/highmaps.min.js') }}"></script>
+    <script src="{{ url_for('static', path='/js2/vendor/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', path='/js2/vendor/what-input.min.js') }}"></script>
+    <script src="{{ url_for('static', path='/js2/vendor/foundation.min.js') }}"></script>
+    <script src="{{ url_for('static', path='/js2/app.js') }}"></script>
+  </body>
+</html>
