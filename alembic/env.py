@@ -6,6 +6,7 @@ from sqlalchemy import pool
 from alembic import context
 
 from src.Models.City import City
+from src.Models.Region import Region
 from src.Models.Sickness import Sickness
 from src.Models.SicknessReport import SicknessReport
 from src.Models.State import State
@@ -27,7 +28,8 @@ target_metadata = [
     Sickness.metadata,
     State.metadata,
     City.metadata,
-    SicknessReport.metadata
+    SicknessReport.metadata,
+    Region.metadata
 ]
 
 # other values from the config, defined by the needs of env.py,

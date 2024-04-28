@@ -4,11 +4,8 @@ from sqlalchemy.orm import declarative_base
 Base = declarative_base()
 
 
-class State(Base):
-    __tablename__ = 'states'
+class Region(Base):
+    __tablename__ = 'regions'
     id = Column(Integer, primary_key=True)
-    region_id = Column(Integer, nullable=True)
-    capital_id = Column(Integer, nullable=True)
     name = Column(String(255))
-    acronym = Column(String(2), nullable=True)
 

@@ -1,41 +1,21 @@
 import pandas as pd
 
 from src.Core.QueryBuilder import QueryBuilder
+from src.Models.Region import Region
 from src.Models.State import State
+from src.Repositories.StateRepository import StateRepository
 
 
-class StateSeeder:
+class RegionSeeder:
 
     @staticmethod
     def run():
-        df_state = pd.DataFrame([
-            {'name': 'Acre', 'acronym': 'AC'},
-            {'name': 'Alagoas', 'acronym': 'AL'},
-            {'name': 'Amapá', 'acronym': 'AP'},
-            {'name': 'Amazonas', 'acronym': 'AM'},
-            {'name': 'Bahia', 'acronym': 'BA'},
-            {'name': 'Ceará', 'acronym': 'CE'},
-            {'name': 'Distrito Federal', 'acronym': 'DF'},
-            {'name': 'Espírito Santo', 'acronym': 'ES'},
-            {'name': 'Goiás', 'acronym': 'GO'},
-            {'name': 'Maranhão', 'acronym': 'MA'},
-            {'name': 'Mato Grosso', 'acronym': 'MT'},
-            {'name': 'Mato Grosso do Sul', 'acronym': 'MS'},
-            {'name': 'Minas Gerais', 'acronym': 'MG'},
-            {'name': 'Pará', 'acronym': 'PA'},
-            {'name': 'Paraíba', 'acronym': 'PB'},
-            {'name': 'Paraná', 'acronym': 'PR'},
-            {'name': 'Pernambuco', 'acronym': 'PE'},
-            {'name': 'Piauí', 'acronym': 'PI'},
-            {'name': 'Rio de Janeiro', 'acronym': 'RJ'},
-            {'name': 'Rio Grande do Norte', 'acronym': 'RN'},
-            {'name': 'Rio Grande do Sul', 'acronym': 'RS'},
-            {'name': 'Rondônia', 'acronym': 'RO'},
-            {'name': 'Roraima', 'acronym': 'RR'},
-            {'name': 'Santa Catarina', 'acronym': 'SC'},
-            {'name': 'São Paulo', 'acronym': 'SP'},
-            {'name': 'Sergipe', 'acronym': 'SE'},
-            {'name': 'Tocantins', 'acronym': 'TO'}
+        df_region = pd.DataFrame([
+            {'name': 'Norte'},
+            {'name': 'Nordeste'},
+            {'name': 'Sudeste'},
+            {'name': 'Sul'},
+            {'name': 'Centro-Oeste'}
         ])
 
-        df_state.to_sql(State.__tablename__, con=QueryBuilder().engine, if_exists='append', index=False)
+        df_region.to_sql(Region.__tablename__, con=QueryBuilder().engine, if_exists='append', index=False)

@@ -1,7 +1,7 @@
 import pandas as pd
 import unicodedata
 
-from Repositories.StateRepository import StateRepository
+from src.Repositories.StateRepository import StateRepository
 from src.Core.QueryBuilder import QueryBuilder
 from src.Models.City import City
 

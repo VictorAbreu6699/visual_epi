@@ -50,7 +50,7 @@ class XLSXService:
             })
 
             df_tab3 = df_all_sickness[['name']].rename(columns={'name': 'nome'})
-            df_tab4 = df_all_cities[['name', 'state_name']].rename(columns={'name': 'cidade', 'state_name': 'estado'})
+            df_tab4 = df_all_cities[['name', 'state_name']].rename(columns={'name': 'municipio', 'state_name': 'estado'})
 
             # Escreva cada DataFrame em uma aba separada
             df_tab1.to_excel(writer, sheet_name='registros', index=False)

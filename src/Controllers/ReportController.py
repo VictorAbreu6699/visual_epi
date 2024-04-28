@@ -101,7 +101,7 @@ def report_sickness_by_states(
         start_date: datetime = Query(None), end_date: datetime = Query(None),
         sickness_id: List[int] = Query(None), city_id: List[int] = Query(None), state_id: List[int] = Query(None)
 ):
-    df_states = StateRepository.get_all(columns=['id', 'name', 'acronym'])
+    df_states = StateRepository.get_all(columns=['id', 'name', 'acronym', 'region_id'])
     df_sickness_report = SicknessReportRepository.get_all(
         sickness_id=sickness_id, city_id=city_id, state_id=state_id,
         start_date=start_date, end_date=end_date

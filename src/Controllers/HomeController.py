@@ -10,9 +10,3 @@ def home(request: Request):
     return templates.TemplateResponse(
         request=request, name="index.html"
     )
-
-@router.get("/2")
-def home(request: Request):
-    return templates.TemplateResponse(
-        request=request, name="index2.html"
-    )
