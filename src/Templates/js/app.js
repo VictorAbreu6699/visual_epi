@@ -79,7 +79,7 @@ function printMapChart(myMapChart, map = "BRAZIL") {
 
     myMapChart = Highcharts.mapChart('map-container', {
 
-        title: { text: 'Vacinação por Estado' },
+        title: { text: 'Enfermidade por Estado' },
         subtitle: { text: '' },
 
         mapNavigation: {
