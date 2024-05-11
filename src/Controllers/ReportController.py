@@ -76,7 +76,7 @@ def report(
 
 @router.post("/upload-file")
 async def upload_file(file: UploadFile = File(...)):
-    # Verifica se o arquivo é um Excel
+    # Verifica se o arquivo está no formato Excel
     if not file.filename.endswith('.xlsx'):
         raise HTTPException(
             status_code=400, detail="Formato de arquivo inválido. Apenas arquivos Excel (.xlsx) são permitidos."
@@ -91,9 +91,9 @@ async def upload_file(file: UploadFile = File(...)):
 
             XLSXService.import_file_to_database(tmp.name)
 
-        return {"message": "Arquivo recebido e importado com sucesso."}
+        return {"message": "Arquivo enviado e importado com sucesso."}
     except Exception as e:
-        raise HTTPException(status_code=500, detail="Ocorreu um erro ao processar o arquivo: {}".format(str(e)))
+        raise HTTPException(status_code=500, detail="Ocorreu um erro: {}".format(str(e)))
 
 
 @router.get("/report-sickness-by-states")

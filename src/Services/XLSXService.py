@@ -111,7 +111,7 @@ class XLSXService:
             SicknessReportRepository.insert(df_file)
 
         except ValueError as e:
-            raise Exception("O arquivo não está conforme o modelo padrão.")
+            raise Exception("O arquivo não está conforme o modelo.")
         except FileNotFoundError:
             raise Exception("O arquivo especificado não foi encontrado.")
         except Exception as e:

@@ -10,3 +10,10 @@ def home(request: Request):
     return templates.TemplateResponse(
         request=request, name="index.html"
     )
+
+
+@router.get("/importar-arquivo")
+def home(request: Request):
+    return templates.TemplateResponse(
+        request=request, name="uploadFile.html"
+    )

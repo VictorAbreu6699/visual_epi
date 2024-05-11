@@ -30,4 +30,54 @@ function request(metod, url, params = []) {
 
     return result;
   }
-  
+
+ function sendFile(file, url, callbackSuccess, callbackError) {
+    var formData = new FormData();
+    formData.append('file', file);
+
+    $.ajax({
+        url: url,
+        type: 'POST',
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function(response) {
+            if (typeof callbackSuccess === 'function') {
+                callbackSuccess(response.message);
+            }
+            else{
+                console.log('Arquivo foi enviado com sucesso.')
+            }
+        },
+        error: function(xhr, status, error) {
+            if (typeof callbackError === 'function') {
+                response = xhr.responseJSON.detail
+                callbackError(response);
+            }
+            else{
+                console.error('Erro ao enviar arquivo:', error);
+            }
+        }
+    });
+}
+
+function showAlertForm(alertElementId, response, isError){
+    alertElement = $('#'+alertElementId)
+    if(!$(alertElement).length){
+        return;
+    }
+    if(isError){
+        $(alertElement).addClass('alert-danger');
+        $(alertElement).removeClass('alert-success');
+    }
+    else{
+        $(alertElement).addClass('alert-success');
+        $(alertElement).removeClass('alert-danger');
+    }
+
+    $(alertElement).text(response)
+    alertElement.css({'display': 'block'})
+    if(!isError){
+        alertElement.delay(3000).fadeOut('slow');
+    }
+}
