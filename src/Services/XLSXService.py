@@ -41,22 +41,20 @@ class XLSXService:
                     'enfermidade', 'municipio', 'data', 'numero_casos'
                 ],
                 'formato': [
-                    'texto', 'texto, conforme aba "cidades"', '2024-01-01 (Y-m-d)', 'inteiro'
+                    'texto', 'texto, conforme aba "regioes"', 'data', 'número inteiro'
                 ],
                 'descrição': [
-                    'Precisa ser conforme a aba "enfermidades"', 'Precisa ser conforme a aba "regioes"',
-                    'data do registro, no formato Y-m-d, Ano-Mês-Dia', 'quantidade de casos constatados na data'
+                    'Enfermidade relacionada ao registro', 'Precisa ser conforme a aba "regioes"',
+                    'Data do registro, no formato de Data', 'Quantidade de casos constatados na data'
                 ]
             })
 
-            df_tab3 = df_all_sickness[['name']].rename(columns={'name': 'nome'})
-            df_tab4 = df_all_cities[['name', 'state_name']].rename(columns={'name': 'municipio', 'state_name': 'estado'})
+            df_tab3 = df_all_cities[['name', 'state_name']].rename(columns={'name': 'municipio', 'state_name': 'estado'})
 
-            # Escreva cada DataFrame em uma aba separada
+            # Escreve cada DataFrame em uma aba separada
             df_tab1.to_excel(writer, sheet_name='registros', index=False)
             df_tab2.to_excel(writer, sheet_name='dicionario', index=False)
-            df_tab3.to_excel(writer, sheet_name='enfermidades', index=False)
-            df_tab4.to_excel(writer, sheet_name='regioes', index=False)
+            df_tab3.to_excel(writer, sheet_name='regioes', index=False)
 
         return path
 
@@ -86,7 +84,22 @@ class XLSXService:
                 df_sickness[['id', 'name']].rename(columns={'name': 'sickness_name', 'id': 'sickness_id'}),
                 on='sickness_name',
                 how='left'
-            ).drop(columns=['sickness_name'])
+            )
+
+            df_new_sickness = df_file[df_file['sickness_id'].isnull()]
+            if not df_new_sickness.empty:
+                SicknessRepository.insert(df_new_sickness[['sickness_name']].rename(columns={'sickness_name': 'name'}))
+                df_sickness = SicknessRepository.get_all()
+                df_file = df_file.merge(
+                    df_sickness[['id', 'name']].rename(columns={'name': 'sickness_name', 'id': 'sickness_id'}),
+                    on='sickness_name',
+                    how='left'
+                )
+                df_file['sickness_id_x'] = df_file['sickness_id_y']
+                df_file = df_file.drop(columns=['sickness_id_y']).rename(columns={'sickness_id_x': 'sickness_id'})
+
+            df_file = df_file.drop(columns=['sickness_name'])
+
             df_file = df_file.merge(
                 df_cities[['id', 'name']].rename(columns={'name': 'city_name', 'id': 'city_id'}),
                 on='city_name',
