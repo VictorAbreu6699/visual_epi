@@ -104,7 +104,14 @@ class XLSXService:
                 df_cities[['id', 'name']].rename(columns={'name': 'city_name', 'id': 'city_id'}),
                 on='city_name',
                 how='left'
-            ).drop(columns=['city_name'])
+            )
+
+            df_cities_dont_found = df_file[df_file['city_id'].isnull()]
+            if not df_cities_dont_found.empty:
+                cities_dont_found = ', '.join(df_cities_dont_found['city_name'].sort_values().unique().tolist())
+                raise Exception(
+                    f"Não foi possível identificar as cidades:\n{cities_dont_found}."
+                )
 
             df_sickness_report = SicknessReportRepository.get_all(columns=[
                 'sickness_id', 'city_id', 'date', 'cases_count'
@@ -128,4 +135,4 @@ class XLSXService:
         except FileNotFoundError:
             raise Exception("O arquivo especificado não foi encontrado.")
         except Exception as e:
-            raise Exception("Ocorreu um erro ao processar o arquivo:{}".format(str(e)))
+            raise Exception("Ocorreu um erro ao processar o arquivo:\n{}".format(str(e)))
