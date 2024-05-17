@@ -88,7 +88,11 @@ class XLSXService:
 
             df_new_sickness = df_file[df_file['sickness_id'].isnull()]
             if not df_new_sickness.empty:
-                SicknessRepository.insert(df_new_sickness[['sickness_name']].rename(columns={'sickness_name': 'name'}))
+                try:
+                    SicknessRepository.insert(df_new_sickness[['sickness_name']].rename(columns={'sickness_name': 'name'}))
+                except Exception as e:
+                    raise Exception('Ocorreu um erro ao salvar novas enfermidades.')
+
                 df_sickness = SicknessRepository.get_all()
                 df_file = df_file.merge(
                     df_sickness[['id', 'name']].rename(columns={'name': 'sickness_name', 'id': 'sickness_id'}),
@@ -128,11 +132,14 @@ class XLSXService:
 
                 df_file = df_file[df_file['_merge'] == 'left_only'].drop(columns=['_merge'])
 
-            SicknessReportRepository.insert(df_file)
+            try:
+                SicknessReportRepository.insert(df_file)
+            except Exception as e:
+                raise Exception('Ocorreu um erro ao salvar os registros.')
 
         except ValueError as e:
             raise Exception("O arquivo não está conforme o modelo.")
         except FileNotFoundError:
             raise Exception("O arquivo especificado não foi encontrado.")
         except Exception as e:
-            raise Exception("Ocorreu um erro ao processar o arquivo:\n{}".format(str(e)))
+            raise Exception(str(e))
