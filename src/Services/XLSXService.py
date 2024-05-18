@@ -131,11 +131,8 @@ class XLSXService:
                 )
 
                 df_file = df_file[df_file['_merge'] == 'left_only'].drop(columns=['_merge'])
-
-            try:
-                SicknessReportRepository.insert(df_file)
-            except Exception as e:
-                raise Exception('Ocorreu um erro ao salvar os registros.')
+            df_file = df_file.drop(columns=['city_name'])
+            SicknessReportRepository.insert(df_file)
 
         except ValueError as e:
             raise Exception("O arquivo não está conforme o modelo.")
