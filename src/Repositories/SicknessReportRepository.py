@@ -44,6 +44,7 @@ class SicknessReportRepository:
         elif end_date:
             query = query.filter(SicknessReport.date <= end_date)
 
+        query = query.order_by(Sickness.name)
         # Converter os resultados para um DataFrame
         df = pd.read_sql(query.statement, query.session.bind)
 

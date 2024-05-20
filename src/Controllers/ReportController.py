@@ -125,3 +125,28 @@ def report_sickness_by_states(
         "message": "Operação concluída com sucesso.",
         "data": df_states.to_dict(orient='records')
     }
+
+
+@router.get("/report-sickness-by-doughnut-chart")
+def report_sickness_cases_by_doughnut_chart(
+        start_date: datetime = Query(None), end_date: datetime = Query(None),
+        sickness_id: List[int] = Query(None), city_id: List[int] = Query(None), state_id: List[int] = Query(None)
+):
+    sickness_report = SicknessReportRepository.get_all(
+        sickness_id=sickness_id, city_id=city_id, state_id=state_id, start_date=start_date, end_date=end_date
+    ).reset_index(drop=True)
+
+    sickness_report_grouped = sickness_report.groupby(['sickness_name']).agg({
+        'sickness_name': 'first',
+        'cases_count': 'sum'
+    })
+
+    return {
+        "message": "Operação concluída com sucesso.",
+        'data': {
+            'labels': sickness_report_grouped['sickness_name'].unique().tolist(),
+            'datasets': [{
+                'data': sickness_report_grouped['cases_count'].tolist()
+            }]
+        }
+    }
