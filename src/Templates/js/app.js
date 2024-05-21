@@ -453,3 +453,27 @@ function selectByCode(el, code) {
 function cleanChart(chart) {
     if (chart) chart.destroy();
 }
+
+
+function criarGraficoNumeroCasos(){
+    result = request('GET', '/report-sickness-by-doughnut-chart')
+    let doughnutCtx = document.getElementById('chart-doughnut').getContext('2d');
+            let myDoughnutChart = new Chart(doughnutCtx, {
+                type: 'doughnut',
+                data:result.data.data,
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            },
+                            title: {
+                                display: true,
+                                text: 'Número de casos por enfermidade'
+                            }
+                    }
+            }
+            });
+}
+
+window.onload = function () {criarGraficoNumeroCasos()}

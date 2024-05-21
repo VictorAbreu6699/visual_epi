@@ -28,7 +28,7 @@ function request(metod, url, params = []) {
       }
     });
 
-    return result;
+    return result;;
   }
 
  function sendFile(file, url, callbackSuccess, callbackError) {
