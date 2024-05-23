@@ -81,3 +81,82 @@ function showAlertForm(alertElementId, response, isError){
         alertElement.delay(3000).fadeOut('slow');
     }
 }
+
+function buildSelect2(elementId, placeholder, options){
+    options.forEach(function(option) {
+        let newOption = new Option(option.text, option.id, false, false);
+        $('#'+elementId).append(newOption);
+    });
+
+    $('#'+elementId).select2({
+        language: {
+            noResults: function() {
+                return "Nenhum resultado encontrado";
+            },
+            searching: function() {
+                return "Procurando...";
+            },
+            removeAllItems: function() {
+                return "Remover todos os itens";
+            }
+        },
+        placeholder: placeholder,
+        allowClear: true
+    });
+
+    $('#'+elementId).val(null).trigger('change.select2');
+}
+
+function buildSelect2Regions(){
+    let result = request('GET', '/get-regions')
+    let options = []
+
+    if (result.status == 200) {
+        options = result.data.data
+    }
+
+    options = options.map(function(option){
+        return {
+            'id': option.id,
+            'text': option.name
+        }
+    })
+
+    buildSelect2('input-regions', 'Região', options)
+}
+
+function buildSelect2States(){
+    let result = request('GET', '/get-states')
+    let options = []
+
+    if (result.status == 200) {
+        options = result.data.data
+    }
+
+    options = options.map(function(option){
+        return {
+            'id': option.id,
+            'text': option.name
+        }
+    })
+
+    buildSelect2('input-states', 'Estado', options)
+}
+
+function buildSelect2Cities(){
+    let result = request('GET', '/get-cities')
+    let options = []
+
+    if (result.status == 200) {
+        options = result.data.data
+    }
+
+    options = options.map(function(option){
+        return {
+            'id': option.id,
+            'text': option.name
+        }
+    })
+
+    buildSelect2('input-cities', 'Cidade', options)
+}

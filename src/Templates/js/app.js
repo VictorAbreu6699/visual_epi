@@ -8,10 +8,7 @@ let myHistogram;
 let myPolarChart;
 
 let chartForm = document.getElementById("chart-form");
-let selectRegiao = document.getElementById("input-regioes");
-let selectEstado = document.getElementById("input-estados");
-let selectCidade = document.getElementById("input-cidades");
-let selectAno = document.getElementById("input-anos");
+
 
 function cleanOptions(el) {
     while (el.options.length > 1) el.remove(1);
@@ -20,29 +17,6 @@ function cleanOptions(el) {
 chartForm.addEventListener("change", () => {
     cleanChart(Chart.getChart(ctx));
     printChart(myChart);
-});
-
-fillOptions(selectRegiao, selectRegiao, REGIONS, "");
-
-selectRegiao.addEventListener("change", () => {
-    cleanChart(Chart.getChart(ctx));
-    cleanOptions(selectEstado);
-    cleanOptions(selectCidade);
-    cleanOptions(selectAno);
-    fillOptions(selectRegiao, selectEstado, STATES, "region_id");
-});
-
-selectEstado.addEventListener("change", () => {
-    cleanChart(Chart.getChart(ctx));
-    cleanOptions(selectCidade);
-    cleanOptions(selectAno);
-    fillOptions(selectEstado, selectCidade, CITIES, "code", getFirstTwoDigits);
-});
-
-selectCidade.addEventListener("change", () => {
-    cleanChart(Chart.getChart(ctx));
-    cleanOptions(selectAno);
-    fillOptions(selectCidade, selectAno, YEARS, "");
 });
 
 printMapChart(myMapChart);
@@ -407,24 +381,6 @@ function printPolarChart(myPolarChart) {
 })
 }
 
-function fillOptions(el, target, objArrToCompare, propToCompare, functionToCompareCallback) {
-    if (el === target || el.value) {
-        var val;
-        objArrToCompare.forEach((obj) => {
-            if (propToCompare) {
-                val = functionToCompareCallback ? functionToCompareCallback(obj[propToCompare]) : obj[propToCompare];
-            }
-            if (!propToCompare || (propToCompare && el.value == val)) {
-                var novaOpcao = new Option(String(obj.name), String(obj.id));
-                target.add(novaOpcao, undefined);
-            }
-        });
-        target.disabled = false;
-    } else {
-        target.disabled = true;
-    }
-}
-
 function getFirstTwoDigits(str) {
     return String(str).substring(0, 2);
 }
@@ -454,7 +410,6 @@ function cleanChart(chart) {
     if (chart) chart.destroy();
 }
 
-
 function criarGraficoNumeroCasos(){
     result = request('GET', '/report-sickness-by-doughnut-chart')
     let doughnutCtx = document.getElementById('chart-doughnut').getContext('2d');
@@ -476,4 +431,9 @@ function criarGraficoNumeroCasos(){
             });
 }
 
-window.onload = function () {criarGraficoNumeroCasos()}
+document.addEventListener('DOMContentLoaded', function () {
+    criarGraficoNumeroCasos()
+    buildSelect2Regions()
+    buildSelect2States()
+    buildSelect2Cities()
+});

@@ -10,7 +10,7 @@ from src.Core.QueryBuilder import QueryBuilder
 
 class RegionRepository:
     @staticmethod
-    def get_all(columns: list[str]) -> pd.DataFrame:
+    def get_all(columns: list[str] = []) -> pd.DataFrame:
         # Iniciar uma nova query
         query = QueryBuilder().start_query(Region)
         # Converter os resultados para um DataFrame

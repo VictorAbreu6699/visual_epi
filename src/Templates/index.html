@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Visual EPI</title>
     <link href="{{ url_for('static', path='/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', path='/css/select2.min.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', path='/css/app.css') }}">
   </head>
   <body>
@@ -34,27 +35,23 @@
             <form id="chart-form">
               <div class="row">
                   <div class="col-6">                                                
-                    <div class="mb-3">                            
-                      <label for="input-regioes" class="form-label">Regiões</label>
-                      <select id="input-regioes" class="form-select"></select>
+                    <div class="mb-3">
+                      <select id="input-regions" class="select2 form-select"></select>
                     </div>
                   </div>
                   <div class="col-6">                      
-                      <div class="mb-3">                
-                        <label for="input-estados" class="form-label">Estados</label>            
-                        <select id="input-estados" class="form-select"></select>
+                      <div class="mb-3">
+                        <select id="input-states" class="select2 form-select"></select>
                       </div>
                   </div>
                   <div class="col-6">
-                    <div class="mb-3">            
-                      <label for="input-cidades" class="form-label">Cidades</label>                
-                      <select id="input-cidades" class="form-select"></select>
+                    <div class="mb-3">
+                      <select id="input-cities" class="select2 form-select"></select>
                     </div>
                   </div>
                   <div class="col-6">
-                      <div class="mb-3">  
-                        <label for="input-anos" class="form-label">Anos</label>                          
-                        <select id="input-anos" class="form-select"></select>
+                      <div class="mb-3">
+                        <select id="input-years" class="select2 form-select"></select>
                       </div>
                   </div>
               </div>
@@ -118,6 +115,7 @@
     <script src="{{ url_for('static', path='/js/vendor/jquery.min.js') }}"></script>
     <script src="{{ url_for('static', path='/js/vendor/what-input.min.js') }}"></script>
     <script src="{{ url_for('static', path='/js/vendor/foundation.min.js') }}"></script>
+    <script src="{{ url_for('static', path='/js/vendor/select2.min.js') }}"></script>
     <script src="{{ url_for('static', path='/js/app.js') }}"></script>
   </body>
 </html>
