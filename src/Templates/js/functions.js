@@ -2,7 +2,7 @@ function request(metod, url, params = []) {
     var result = null;    
     let query;
 
-    if(params.length > 1)
+    if(params.length > 0)
     {        
         for (let i = 0; i < params.length; i++) {            
             query = '';
@@ -115,18 +115,26 @@ function buildSelect2Regions(){
         options = result.data.data
     }
 
-    options = options.map(function(option){
+    options_formated = options.map(function(option){
         return {
             'id': option.id,
             'text': option.name
         }
     })
 
-    buildSelect2('input-regions', 'Região', options)
+    buildSelect2('input-regions', 'Região', options_formated)
 }
 
-function buildSelect2States(){
-    let result = request('GET', '/get-states')
+function buildSelect2States(regions = null){
+    let result = null
+    if(regions){
+        let regions_id = regions.map((region_id) => { return {'name': 'region_id', 'value': region_id}})
+
+        result = request('GET', '/get-states', regions_id)
+    }
+    else{
+        result = request('GET', '/get-states')
+    }
     let options = []
 
     if (result.status == 200) {
@@ -141,10 +149,20 @@ function buildSelect2States(){
     })
 
     buildSelect2('input-states', 'Estado', options)
+    $('#input-states').prop('disabled', false).trigger('change.select2')
 }
 
-function buildSelect2Cities(){
-    let result = request('GET', '/get-cities')
+function buildSelect2Cities(states = null){
+
+    let result = null
+    if(states){
+        let states_id = states.map((state_id) => { return {'name': 'state_id', 'value': state_id}})
+
+        result = request('GET', '/get-cities', states_id)
+    }
+    else{
+        result = request('GET', '/get-cities')
+    }
     let options = []
 
     if (result.status == 200) {

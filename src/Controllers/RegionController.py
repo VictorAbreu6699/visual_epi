@@ -6,7 +6,7 @@ router = APIRouter()
 
 @router.get("/get-regions")
 def default_csv_model():
-    regions = RegionRepository.get_all()
+    regions = RegionRepository.get_all().sort_values(by=['name'])
 
     return {
         'message': 'Operação concluída com sucesso.',

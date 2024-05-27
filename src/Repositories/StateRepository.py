@@ -9,9 +9,10 @@ from src.Core.QueryBuilder import QueryBuilder
 
 class StateRepository:
     @staticmethod
-    def get_all(columns: list[str] = []) -> pd.DataFrame:
+    def get_all(columns: list[str] = None, region_id: list[int] = None) -> pd.DataFrame:
         # Iniciar uma nova query
         query = QueryBuilder().start_query(State)
+        query = query.filter(State.region_id.in_(region_id))
         # Converter os resultados para um DataFrame
         df = pd.read_sql(query.statement, query.session.bind)
 

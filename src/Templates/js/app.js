@@ -434,6 +434,26 @@ function criarGraficoNumeroCasos(){
 document.addEventListener('DOMContentLoaded', function () {
     criarGraficoNumeroCasos()
     buildSelect2Regions()
-    buildSelect2States()
-    buildSelect2Cities()
+    $('#input-states').select2({'placeholder': 'Estado'})
+    $('#input-cities').select2({'placeholder': 'Cidade'})
+
+    $('#input-regions').on('change', function(e) {
+      if($(this).val() != null){
+        $('#input-states').empty().val(null).trigger('change.select2')
+        buildSelect2States([$('#input-regions').val()])
+      }
+      else{
+        $('#input-states').empty().val(null).prop('disabled', true).trigger('change.select2')
+      }
+    })
+
+    $('#input-states').on('change', function(e) {
+      if($(this).val() != null){
+        $('#input-cities').empty().val(null).prop('disabled', false).trigger('change.select2')
+        buildSelect2Cities([$('#input-states').val()])
+      }
+      else{
+        $('#input-cities').empty().val(null).prop('disabled', true).trigger('change.select2')
+      }
+    })
 });
