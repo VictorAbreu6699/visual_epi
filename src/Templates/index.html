@@ -6,6 +6,7 @@
     <title>Visual EPI</title>
     <link href="{{ url_for('static', path='/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ url_for('static', path='/css/select2.min.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', path='/css/flatpickr.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', path='/css/app.css') }}">
   </head>
   <body>
@@ -51,7 +52,7 @@
                   </div>
                   <div class="col-6">
                       <div class="mb-3">
-                        <select id="input-years" class="select2 form-select"></select>
+                        <input id="input-years" class="form-select" placeholder="Intervalo de datas" style="height: 28px">
                       </div>
                   </div>
               </div>
@@ -116,6 +117,7 @@
     <script src="{{ url_for('static', path='/js/vendor/what-input.min.js') }}"></script>
     <script src="{{ url_for('static', path='/js/vendor/foundation.min.js') }}"></script>
     <script src="{{ url_for('static', path='/js/vendor/select2.min.js') }}"></script>
+    <script src="{{ url_for('static', path='/js/vendor/flatpickr.js') }}"></script>
     <script src="{{ url_for('static', path='/js/app.js') }}"></script>
   </body>
 </html>

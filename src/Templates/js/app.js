@@ -14,10 +14,10 @@ function cleanOptions(el) {
     while (el.options.length > 1) el.remove(1);
 }
 
-chartForm.addEventListener("change", () => {
-    cleanChart(Chart.getChart(ctx));
-    printChart(myChart);
-});
+//chartForm.addEventListener("change", () => {
+//    cleanChart(Chart.getChart(ctx));
+//    printChart(myChart);
+//});
 
 printMapChart(myMapChart);
 
@@ -456,4 +456,6 @@ document.addEventListener('DOMContentLoaded', function () {
         $('#input-cities').empty().val(null).prop('disabled', true).trigger('change.select2')
       }
     })
+
+    buildFlatpickr('input-years')
 });
