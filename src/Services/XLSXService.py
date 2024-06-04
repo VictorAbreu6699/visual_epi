@@ -2,7 +2,7 @@ from datetime import datetime
 
 import pandas as pd
 import unicodedata
-
+import ftfy
 from src.Repositories.CityRepository import CityRepository
 from src.Repositories.SicknessReportRepository import SicknessReportRepository
 from src.Repositories.StateRepository import StateRepository
@@ -12,6 +12,7 @@ from src.Repositories.SicknessRepository import SicknessRepository
 class XLSXService:
     @staticmethod
     def remove_accents_and_uppercase(text):
+        text = ftfy.fix_text(text)
         # Remove accents and convert to uppercase
         text_without_accents = ''.join(
             char.upper() for char in unicodedata.normalize('NFD', text) if unicodedata.category(char) != 'Mn')
@@ -19,7 +20,6 @@ class XLSXService:
 
     @staticmethod
     def generate_default_file() -> str:
-        df_all_sickness = SicknessRepository().get_all()
         df_all_cities = CityRepository().get_all()
         df_all_states = StateRepository().get_all()
 
@@ -34,18 +34,19 @@ class XLSXService:
         with pd.ExcelWriter(path) as writer:
             # Crie um DataFrame para cada aba
             df_tab1 = pd.DataFrame(columns=[
-                'enfermidade', 'municipio', 'data', 'numero_casos'
+                'enfermidade', 'municipio', 'estado', 'data', 'numero_casos'
             ])
             df_tab2 = pd.DataFrame({
                 'coluna': [
-                    'enfermidade', 'municipio', 'data', 'numero_casos'
+                    'enfermidade', 'municipio', 'estado', 'data', 'numero_casos'
                 ],
                 'formato': [
-                    'texto', 'texto, conforme aba "regioes"', 'data', 'número inteiro'
+                    'texto', 'texto, conforme aba "regioes"', 'texto, conforme aba "regioes"', 'data', 'número inteiro'
                 ],
                 'descrição': [
                     'Enfermidade relacionada ao registro', 'Precisa ser conforme a aba "regioes"',
-                    'Data do registro, no formato de Data', 'Quantidade de casos constatados na data'
+                    'Precisa ser conforme a aba "regioes"', 'Data do registro, no formato de Data',
+                    'Quantidade de casos constatados na data'
                 ]
             })
 
@@ -66,18 +67,31 @@ class XLSXService:
                 return
 
             df_file.rename(columns={
-                "enfermidade": "sickness_name", "municipio": "city_name",
+                "enfermidade": "sickness_name", "municipio": "city_name", "estado": "state_name",
                 "data": "date", "numero_casos": "cases_count"
             }, inplace=True)
-
             df_sickness = SicknessRepository.get_all()
             df_cities = CityRepository.get_all()
+            df_states = StateRepository().get_all()
 
+            df_cities = df_cities.merge(
+                df_states[['id', 'name']].rename(columns={'id': 'state_id', 'name': 'state_name'}),
+                how='left',
+                on=['state_id']
+            )
+
+            # TODO::
             # Para maior compatibilidade durante o merge, remove acentos e converte em letra maiscula os campos de nome.
             df_sickness['name'] = df_sickness['name'].apply(XLSXService.remove_accents_and_uppercase)
             df_cities['name'] = df_cities['name'].apply(XLSXService.remove_accents_and_uppercase)
+            df_cities['name'] = df_cities['name'].str.replace('-', ' ')
+            df_cities['state_name'] = df_cities['state_name'].apply(XLSXService.remove_accents_and_uppercase)
+            df_cities['state_name'] = df_cities['state_name'].str.replace('-', ' ')
+            df_file['state_name'] = df_file['state_name'].str.replace('-', ' ')
             df_file['sickness_name'] = df_file['sickness_name'].apply(XLSXService.remove_accents_and_uppercase)
+            df_file['sickness_name'] = df_file['sickness_name'].str.replace('-', ' ')
             df_file['city_name'] = df_file['city_name'].apply(XLSXService.remove_accents_and_uppercase)
+            df_file['city_name'] = df_file['city_name'].str.replace('-', ' ')
             df_file['date'] = pd.to_datetime(df_file['date'])
 
             df_file = df_file.merge(
@@ -105,8 +119,8 @@ class XLSXService:
             df_file = df_file.drop(columns=['sickness_name'])
 
             df_file = df_file.merge(
-                df_cities[['id', 'name']].rename(columns={'name': 'city_name', 'id': 'city_id'}),
-                on='city_name',
+                df_cities[['id', 'name', 'state_name']].rename(columns={'name': 'city_name', 'id': 'city_id'}),
+                on=['city_name', 'state_name'],
                 how='left'
             )
 
@@ -131,7 +145,7 @@ class XLSXService:
                 )
 
                 df_file = df_file[df_file['_merge'] == 'left_only'].drop(columns=['_merge'])
-            df_file = df_file.drop(columns=['city_name'])
+            df_file = df_file.drop(columns=['city_name', 'state_name'])
             SicknessReportRepository.insert(df_file)
 
         except ValueError as e:
@@ -139,4 +153,4 @@ class XLSXService:
         except FileNotFoundError:
             raise Exception("O arquivo especificado não foi encontrado.")
         except Exception as e:
-            raise Exception(str(e))
+            raise e
