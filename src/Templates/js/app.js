@@ -431,8 +431,47 @@ function criarGraficoNumeroCasos(){
             });
 }
 
+function criarGraficoLinhaCasos(){
+    let result = request('GET', '/report-sickness-by-line-chart')
+    let doughnutCtx = document.getElementById('chart-line').getContext('2d');
+            let myDoughnutChart = new Chart(doughnutCtx, {
+                type: 'line',
+                data: result.data.data,
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            },
+                            title: {
+                                display: true,
+                                text: 'Número de casos por enfermidade'
+                            }
+                    },
+                     scales: {
+                        x: {
+                            display: true,
+                            title: {
+                                display: true,
+                                text: 'Data'
+                            }
+                        },
+                        y: {
+                            display: true,
+                            title: {
+                                display: true,
+                                text: 'Número de Casos'
+                            },
+                            suggestedMin: 0, // Valor mínimo sugerido
+                            suggestedMax: 50 // Valor máximo sugerido
+                        }
+                    }
+                }
+            });
+}
+
 document.addEventListener('DOMContentLoaded', function () {
-    criarGraficoNumeroCasos()
+    criarGraficoLinhaCasos()
     buildSelect2Regions()
     $('#input-states').select2({'placeholder': 'Estado'})
     $('#input-cities').select2({'placeholder': 'Cidade'})

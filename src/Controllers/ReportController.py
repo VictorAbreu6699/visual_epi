@@ -150,3 +150,23 @@ def report_sickness_cases_by_doughnut_chart(
             }]
         }
     }
+
+
+@router.get("/report-sickness-by-line-chart")
+def report_sickness_cases_by_line_chart(
+        start_date: datetime = Query(None), end_date: datetime = Query(None),
+        sickness_id: List[int] = Query(None), city_id: List[int] = Query(None), state_id: List[int] = Query(None)
+):
+    sickness_report = SicknessReportRepository.get_all(
+        sickness_id=sickness_id, city_id=city_id, state_id=state_id, start_date=start_date, end_date=end_date
+    ).reset_index(drop=True)
+
+    return {
+        "message": "Operação concluída com sucesso.",
+        'data': {
+            'labels': sickness_report['date'].unique().tolist(),
+            'datasets': [{
+                'data': sickness_report['cases_count'].tolist()
+            }]
+        }
+    }
