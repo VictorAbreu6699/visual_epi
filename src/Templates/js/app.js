@@ -483,6 +483,7 @@ document.addEventListener('DOMContentLoaded', function () {
       }
       else{
         $('#input-states').empty().val(null).prop('disabled', true).trigger('change.select2')
+        $('#input-cities').empty().val(null).prop('disabled', true).trigger('change.select2')
       }
     })
 
