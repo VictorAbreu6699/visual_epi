@@ -159,14 +159,23 @@ def report_sickness_cases_by_line_chart(
 ):
     sickness_report = SicknessReportRepository.get_all(
         sickness_id=sickness_id, city_id=city_id, state_id=state_id, start_date=start_date, end_date=end_date
-    ).reset_index(drop=True)
+    ).reset_index(drop=True).query("city_id == 30")
+    sickness_report['date'] = pd.to_datetime(sickness_report['date']).dt.strftime('%d/%m/%Y')
+
+    result = []
+    for group_name, group_data in sickness_report.groupby('sickness_name'):
+        result.append({
+            'axis': 'y',
+            "fill": False,
+            'label': group_name,
+            'data': group_data[['date', 'cases_count']].rename(columns={'date': 'x', 'cases_count': 'y'}).to_dict(
+                orient='records'
+            )
+        })
 
     return {
         "message": "Operação concluída com sucesso.",
         'data': {
-            'labels': sickness_report['date'].unique().tolist(),
-            'datasets': [{
-                'data': sickness_report['cases_count'].tolist()
-            }]
+            'datasets': result
         }
     }

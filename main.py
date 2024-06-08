@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from starlette.staticfiles import StaticFiles
 
 from src.Controllers import HomeController, FileController, ReportController, RegionController, StateController, \
-    CityController
+    CityController, SicknessController
 
 app = FastAPI()
 
@@ -16,3 +16,4 @@ app.include_router(ReportController.router)
 app.include_router(RegionController.router)
 app.include_router(StateController.router)
 app.include_router(CityController.router)
+app.include_router(SicknessController.router)

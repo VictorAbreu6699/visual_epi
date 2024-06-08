@@ -204,3 +204,21 @@ function buildFlatpickr(elementId, mode = 'range')
         }
     });
 }
+
+function buildSelect2Sickness(){
+    let result = request('GET', '/get-sickness')
+    let options = []
+
+    if (result.status == 200) {
+        options = result.data.data
+    }
+
+    options_formated = options.map(function(option){
+        return {
+            'id': option.id,
+            'text': option.name
+        }
+    })
+
+    buildSelect2('input-sickness', 'Enfermidades', options_formated)
+}

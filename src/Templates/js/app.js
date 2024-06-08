@@ -497,4 +497,6 @@ document.addEventListener('DOMContentLoaded', function () {
     })
 
     buildFlatpickr('input-years')
+
+    buildSelect2Sickness()
 });

@@ -30,6 +30,9 @@
             <form id="chart-form">
               <div class="row mb-4">
                   <div class="col-3">
+                    <select id="input-sickness" class="select2 form-select"></select>
+                  </div>
+                  <div class="col-3">
                     <select id="input-regions" class="select2 form-select"></select>
                   </div>
                   <div class="col-3">
@@ -38,9 +41,11 @@
                   <div class="col-3">
                     <select id="input-cities" class="select2 form-select" disabled></select>
                   </div>
-                  <div class="col-3">
+              </div>
+              <div class="row mb-4">
+                <div class="col-3">
                     <input id="input-years" class="form-select" placeholder="Intervalo de datas" style="height: 28px">
-                  </div>
+                </div>
               </div>
           </form>
           </div>
@@ -53,7 +58,7 @@
           <div class="row">
               <ul class="nav nav-tabs" id="myTab" role="tablist">
                   <li class="nav-item" role="presentation">
-                      <button class="nav-link active" id="tab1-tab" data-bs-toggle="tab" data-bs-target="#tab1" type="button" role="tab" aria-controls="tab1" aria-selected="true">Tab 1</button>
+                      <button class="nav-link active" id="tab1-tab" data-bs-toggle="tab" data-bs-target="#tab1" type="button" role="tab" aria-controls="tab1" aria-selected="true">Casos por data</button>
                   </li>
                   <li class="nav-item" role="presentation">
                       <button class="nav-link" id="tab2-tab" data-bs-toggle="tab" data-bs-target="#tab2" type="button" role="tab" aria-controls="tab2" aria-selected="false">Tab 2</button>
